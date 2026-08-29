@@ -1,7 +1,4 @@
-import 'dart:io' show Platform;
-
-import 'package:cupertino_ui/cupertino_ui.dart'
-    show CupertinoRouteTransitionMixin, CupertinoPageTransition;
+import 'package:cupertino_ui/cupertino_ui.dart' show CupertinoPageTransition;
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/routes/default_transitions.dart';
 import 'package:get/get_navigation/src/routes/shared_axis_transition.dart';
@@ -130,22 +127,13 @@ mixin GetPageRouteTransitionMixin<T> on PageRoute<T> {
   ) {
     switch (Get.defaultTransition) {
       case Transition.native:
-        if (Platform.isIOS || Platform.isMacOS) {
-          return CupertinoRouteTransitionMixin.buildPageTransitions<T>(
-            rawRoute,
-            context,
-            animation,
-            secondaryAnimation,
-            child,
-          );
-        }
-        return const ZoomPageTransitionsBuilder().buildTransitions(
-          rawRoute,
-          context,
-          animation,
-          secondaryAnimation,
-          child,
-        );
+        return Theme.of(context).pageTransitionsTheme.buildTransitions<T>(
+              rawRoute,
+              context,
+              animation,
+              secondaryAnimation,
+              child,
+            );
 
       case Transition.cupertino || Transition.cupertinoDialog:
         return CupertinoPageTransition(
